@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Объединяем все аргументы в одну строку
+# Combine all arguments into one string
 PROMPT=$(printf "%s " "$@")
 
-# Отправляем запрос в Ollama и выводим только сгенерированный текст
+# Send a request to Ollama and display only the generated text
 ollama run llama3 "$PROMPT"
