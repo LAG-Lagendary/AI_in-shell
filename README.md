@@ -1,118 +1,79 @@
-Использование pipx (альтернативный, более чистый способ)
+Using pipx (an alternative, cleaner method)
 
-Если вы хотите установить Python-утилиту, чтобы она была доступна глобально, но при этом не засоряла системные пакеты, используйте pipx.
+If you want to install a Python utility so that it is available globally but doesn't clutter your system packages, use pipx.
 
-Установите pipx через apt (в новых версиях Kali он может быть предустановлен):
+Install pipx via apt (it may be pre-installed in newer versions of Kali):
 
-bash
-sudo apt install pipx -y
+bash sudo apt install pipx -y
 
+Add the pipx directory to your $PATH if it isn't automatically added:
 
-Добавьте каталог pipx в $PATH, если это не произошло автоматически:
+bash pipx ensurepath
 
-bash
-pipx ensurepath
+To install the Hugging Face CLI via pipx, use the following command, specifying the correct package name:
 
-
-Чтобы установить CLI для Hugging Face через pipx, используйте следующую команду, указав имя правильного пакета:
-
-bash
-pipx install "huggingface_hub[cli]"
+bash pipx install "huggingface_hub[cli]"
 
 First, install curl using the package manager. The prompt correctly suggests using apt.
 
-bash
-sudo apt install curl
+bash sudo apt install curl
 
 Instead of piping to sh, pipe the script to bash so it is executed with the correct interpreter. This will resolve the syntax error.
 
-bash
-curl -fsSL https://ollama.com/install.sh | bash
+bash curl -fsSL https://ollama.com/install.sh | bash
 
+After installation, you need to download the language model. You can choose any of the available models on the Ollama website. For this example, we will use llama3, one of the most popular and effective models.
 
-После установки нужно скачать языковую модель. Вы можете выбрать любую из доступных на сайте Ollama. Для примера мы будем использовать llama3, одну из самых популярных и эффективных моделей.
-
-bash
-ollama run llama3
+bash ollama run llama3
 
 Use Ctrl + d or /bye to exit.
 
 /bye
 
+Creating a custom shull command. To access the model as a system command, you need to create a script and set up an alias for it. Creating the script
 
+Open a text editor and create a file, for example, named ollama_cli.sh.
 
-Создание кастомной команды shull
-Для того чтобы обращаться к модели, как к системной команде, нужно создать скрипт и настроить для него alias.
-Создание скрипта
+bash nano ~/ollama_cli.sh
 
-Откройте текстовый редактор и создайте файл, например, с именем ollama_cli.sh.
+Insert the following code into it, which will pass your query to the model and then print the response:
 
-bash
-nano ~/ollama_cli.sh
+bash #!/bin/bash
+Concatenate all arguments into one string
 
-Вставьте в него следующий код, который будет передавать ваш запрос модели, а затем выводить ответ:
+PROMPT=$(printf "%s" "$@")
+Send the query to Ollama and print only the generated text
 
-bash
-#!/bin/bash
-# Объединяем все аргументы в одну строку
-PROMPT=$(printf "%s " "$@")
-# Отправляем запрос в Ollama и выводим только сгенерированный текст
 ollama run llama3 "$PROMPT"
 
+Save the file and close the editor (Ctrl+X, then Y and Enter).
 
-Сохраните файл и закройте редактор (Ctrl+X, затем Y и Enter).
+Granting Execution Permissions: Make the script executable:
 
+bash chmod +x ~/ollama_cli.sh
 
-Предоставление прав на выполнение
-Сделайте скрипт исполняемым:
+Setting Up an Alias: Now let's create an alias to call the script with the shull command.
 
-bash
-chmod +x ~/ollama_cli.sh
+Open your shell configuration file (e.g., .bashrc for Bash or .zshrc for Zsh):
 
-Настройка алиаса
-Теперь создадим алиас, чтобы вызывать скрипт командой shull.
+bash nano ~/.bashrc # or nano ~/.zshrc
 
-Откройте файл конфигурации вашего шелла (например, .bashrc для Bash или .zshrc для Zsh):
+Add the following line to the very bottom of the file, which will create an alias named shull for our script:
 
-bash
-nano ~/.bashrc  # или nano ~/.zshrc
+bash alias shull="~/ollama_cli.sh"
 
-В самый конец файла добавьте следующую строку, которая создаст алиас shull для нашего скрипта:
+Save the file and close the editor (Ctrl+X, then Y and Enter).
 
-bash
-alias shull="~/ollama_cli.sh"
+Refresh the shell configuration for the changes to take effect:
 
+bash source ~/.bashrc # or source ~/.zshrc
 
-Сохраните файл и закройте редактор.(Ctrl+X, затем Y и Enter).
+Using the shull command: Now you can access your local AI model directly from the terminal. Examples:
 
-Обновите конфигурацию шелла, чтобы изменения вступили в силу:
+bash shull "Write a small bash script to backup a folder"
 
-bash
-source ~/.bashrc  # или source ~/.zshrc
+bash shull "Explain how the SHA-256 algorithm works"
 
-Использование команды shull
-Теперь вы можете обращаться к своей локальной ИИ-модели прямо из терминала.
-Примеры:
+bash shull "Compose a joke about the terminal and Linux"
 
-bash
-shull "Напиши небольшой bash скрипт для бэкапа папки"
-
-bash
-shull "Объясни, как работает алгоритм SHA-256"
-
-bash
-shull "Придумай шутку про терминал и Linux"
-
-
-Это позволит вам использовать Ollama, как будто это ещё одна системная утилита, которая всегда под рукой.
-
-
-
-
-
-
-
-
-
-
-
+This will allow you to use Ollama as if it were another system utility that's always at hand.
