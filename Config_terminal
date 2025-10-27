@@ -1,0 +1,25 @@
+# /home/user/.bashrc
+# add to end
+
+aish() {
+    # Запускаем Zsh, которая после запуска выполняет команду 'source ~/.aishrc',
+    # а затем запускает интерактивную сессию
+    zsh -c "source ~/.aishrc; zsh -i"
+}
+
+# /home/user/.zshrc
+# add to end
+
+aish() {
+    # Заменяет текущий шелл на Zsh, считывая .aishrc
+    exec zsh --rcs ~/.aishrc
+}
+
+#copy with new name  # /home/user/.zshrc new config terminal file /home/user/.aishrc
+#add to end
+
+alias shull="~/ollama_cli.sh"
+alias ovpn1='sudo openvpn --config /etc/openvpn/XXX.ovpn'
+alias ovpn2='sudo openvpn --config /etc/openvpn/XYZ.ovpn'
+alias ovpn3='sudo openvpn --config /etc/openvpn/ZZZ.ovpn'
+alias ovpn4='sudo openvpn --config /etc/openvpn/ZXC.ovpn'
